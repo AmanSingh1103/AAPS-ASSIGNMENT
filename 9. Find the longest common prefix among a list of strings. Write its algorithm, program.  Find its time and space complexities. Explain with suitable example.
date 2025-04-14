@@ -1,0 +1,56 @@
+✅ 1. Problem Statement
+Given: A list of strings
+Goal: Find the longest common prefix shared among all the strings.
+
+✅ 2. Algorithm (Vertical Scanning)
+Idea:
+Check characters column by column (same index in all strings):
+If all strings have the same character at a position → continue
+If a mismatch is found or a string ends → stop
+
+Steps:
+If the list is empty, return "".
+Loop through the characters of the first string.
+For each character:
+Check if all other strings have the same character at that position.
+If not, return the prefix up to the current position.
+If no mismatch is found, return the entire first string.
+
+💻 3. Python Program
+def longest_common_prefix(strs):
+    if not strs:
+        return ""
+
+    for i in range(len(strs[0])):
+        char = strs[0][i]
+        for s in strs[1:]:
+            if i >= len(s) or s[i] != char:
+                return strs[0][:i]
+
+    return strs[0]
+
+# Example usage
+strings = ["flower", "flow", "flight"]
+result = longest_common_prefix(strings)
+print(f"Longest common prefix: '{result}'")
+
+⏱️ 4. Time and Space Complexities
+Operation          	Complexity
+Time Complexity    	O(N * M)
+Space Complexity  	O(1) (no extra space used)
+
+N = number of strings
+M = length of the shortest string
+Worst case: All strings are identical → need to compare every character
+
+🔍 5. Example Explanation
+Input:
+["flower", "flow", "flight"]
+Index 0: All have 'f' → ✅
+
+Index 1: All have 'l' → ✅
+
+Index 2: 'o', 'o', 'i' → ❌ mismatch
+
+✅ Output:
+Longest common prefix: 'fl'
