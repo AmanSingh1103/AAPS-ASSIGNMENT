@@ -1,0 +1,63 @@
+✅ 1. Problem Statement
+Goal:
+Given an array arr[], check whether there exists an index i such that:
+sum(arr[0] + arr[1] + ... + arr[i]) == sum(arr[i+1] + arr[i+2] + ... + arr[n-1])
+We're not including the index i in both parts—this is different from the equilibrium index, where i was excluded from both sides.
+
+✅ 2. Algorithm
+Steps:
+Calculate the total sum of the array.
+Initialize left_sum = 0.
+Traverse the array from index 0 to n - 2:
+Add arr[i] to left_sum
+Calculate right_sum = total_sum - left_sum
+If left_sum == right_sum, return True
+If no such split found, return False
+
+💻 3. Python Program
+def can_split_array(arr):
+    total_sum = sum(arr)
+    left_sum = 0
+
+    for i in range(len(arr) - 1):  # last element can't be a split point
+        left_sum += arr[i]
+        right_sum = total_sum - left_sum
+        if left_sum == right_sum:
+            return True
+    return False
+
+# Example usage
+arr = [1, 2, 3, 3]
+if can_split_array(arr):
+    print("Yes, the array can be split into two parts with equal sum.")
+else:
+    print("No, such a split is not possible.")
+
+⏱️ 4. Time and Space Complexities
+Operation	                Complexity
+Time Complexity	          O(n)
+Space Complexity	        O(1)
+
+One pass to calculate total sum: O(n)
+One pass to find split point: O(n)
+No extra array or data structures used
+
+🔍 5. Example Explanation
+Input:
+arr = [1, 2, 3, 3]
+Total sum = 9
+
+Traverse:
+Index_i	       Left_Sum	    Right_Sum
+  0	            1	            8
+  1            	3	            6
+  2	            6	            3
+  3            	—	            —
+At i = 2, left_sum = 6, right_sum = 3 ❌
+At i = 1, left_sum = 3, right_sum = 6 ❌
+At i = 2, left_sum = 6, right_sum = 3 ❌
+
+But after i = 2, next element is 3, so suffix sum becomes 3 ✅
+
+✅ Output:
+Yes, the array can be split into two parts with equal sum.
