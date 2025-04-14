@@ -1,0 +1,105 @@
+✅ Problem Statement
+Goal: Implement two stacks in a single array.
+You must design two stacks that share the same array space but have separate operations (i.e., independent push and pop operations for both stacks).
+
+💡 Key Idea
+The idea is to use two pointers or indices:
+One pointer for the first stack starting from the left (left_index).
+One pointer for the second stack starting from the right (right_index).
+The first stack grows from the left side of the array.
+The second stack grows from the right side of the array.
+They will move towards each other, and as long as the left pointer doesn't surpass the right pointer, we can perform operations for both stacks.
+
+📘 Algorithm
+Initialize an empty array of size n.
+Set left_index = 0 and right_index = n - 1.
+For Stack 1:
+Push operation: Increase left_index, place the value at array[left_index].
+Pop operation: Decrease left_index.
+
+For Stack 2:
+Push operation: Decrease right_index, place the value at array[right_index].
+Pop operation: Increase right_index.
+Operations:
+Push Stack 1: array[left_index++] = value
+Pop Stack 1: array[left_index--]
+Push Stack 2: array[right_index--] = value
+Pop Stack 2: array[right_index++]
+
+🧑‍💻 Python Program
+class TwoStacks:
+    def __init__(self, size):
+        self.size = size
+        self.stack = [None] * size  # Single array to hold two stacks
+        self.left_index = -1  # Start of first stack
+        self.right_index = size  # Start of second stack
+
+    # Push in stack 1
+    def push_stack1(self, value):
+        if self.left_index + 1 == self.right_index:
+            print("Stack Overflow: No space available")
+            return
+        self.left_index += 1
+        self.stack[self.left_index] = value
+
+    # Pop from stack 1
+    def pop_stack1(self):
+        if self.left_index == -1:
+            print("Stack Underflow: Stack 1 is empty")
+            return
+        value = self.stack[self.left_index]
+        self.left_index -= 1
+        return value
+
+    # Push in stack 2
+    def push_stack2(self, value):
+        if self.right_index - 1 == self.left_index:
+            print("Stack Overflow: No space available")
+            return
+        self.right_index -= 1
+        self.stack[self.right_index] = value
+
+    # Pop from stack 2
+    def pop_stack2(self):
+        if self.right_index == self.size:
+            print("Stack Underflow: Stack 2 is empty")
+            return
+        value = self.stack[self.right_index]
+        self.right_index += 1
+        return value
+
+# Example usage
+ts = TwoStacks(10)
+
+# Operations on stack 1
+ts.push_stack1(10)
+ts.push_stack1(20)
+ts.push_stack1(30)
+print("Pop from stack 1:", ts.pop_stack1())  # Output: 30
+
+# Operations on stack 2
+ts.push_stack2(40)
+ts.push_stack2(50)
+ts.push_stack2(60)
+print("Pop from stack 2:", ts.pop_stack2())  # Output: 60
+
+⏱ Time and Space Complexity
+Metric	Value
+Time Complexity	O(1) for each push and pop operation (constant time)
+Space Complexity	O(n) (the array size is n, so the space used by the stacks is proportional to the array size)
+
+🔍 Example Walkthrough
+For size = 10:
+stack1 starts at index 0 and grows towards the right (left_index increases).
+stack2 starts at index 9 and grows towards the left (right_index decreases).
+
+Steps:
+Push 10 to stack1 → stack[0] = 10
+Push 20 to stack1 → stack[1] = 20
+Push 30 to stack1 → stack[2] = 30
+Pop from stack1 → return 30, decrement left_index.
+
+For stack2:
+Push 40 to stack2 → stack[9] = 40
+Push 50 to stack2 → stack[8] = 50
+Pop from stack2 → return 50, increment right_index
