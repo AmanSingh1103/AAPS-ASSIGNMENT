@@ -1,0 +1,96 @@
+Problem: Generate All Subsets of a Given Array
+The task is to generate all subsets (also known as the power set) of a given array. A subset is any combination of elements, including the empty set and the array itself.
+
+Approach:
+Backtracking: A common approach to generate all subsets is backtracking. This involves starting from an empty subset and adding elements one by one to form subsets.
+Binary Representation: Another approach is to use binary numbers to represent subsets. Each bit in the binary representation can correspond to whether an element is included in the subset (1) or not (0).
+Iterative Approach: Start with an empty subset, and for each element in the array, add it to each subset already generated.
+
+Algorithm (Iterative Approach):
+Start with an empty subset: Initially, the only subset is the empty set.
+Iterate through the array: For each element, add it to each of the subsets generated so far. This ensures that we generate all possible subsets.
+Repeat until we have processed all elements.
+
+Algorithm (Backtracking Approach):
+Start with an empty subset and an empty list of subsets.
+Recursively decide whether to include or exclude each element in the subset.
+Add the current subset to the list of subsets.
+Continue until all elements have been processed.
+
+Python Program (Iterative Approach):
+def generate_subsets(nums):
+    subsets = [[]]  # Start with the empty subset
+    
+    # Iterate through each element in the array
+    for num in nums:
+        # For each existing subset, create a new subset by adding the current element
+        subsets += [curr_subset + [num] for curr_subset in subsets]
+    
+    return subsets
+
+# Example usage
+nums = [1, 2, 3]
+print("All subsets are:", generate_subsets(nums))
+Example Walkthrough:
+Input:
+nums = [1, 2, 3]
+Execution:
+Start with empty subset: subsets = [[]]
+First element (1):
+New subsets created by adding 1 to each existing subset: [1].
+Updated subsets = [[], [1]]
+Second element (2):
+New subsets created by adding 2 to each existing subset: [2], [1, 2].
+Updated subsets = [[], [1], [2], [1, 2]]
+Third element (3):
+New subsets created by adding 3 to each existing subset: [3], [1, 3], [2, 3], [1, 2, 3].
+Updated subsets = [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+
+Final Output:
+The subsets are:
+[[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
+Python Program (Backtracking Approach):
+def generate_subsets(nums):
+    result = []
+
+    # Helper function to generate subsets using backtracking
+    def backtrack(start, current_subset):
+        result.append(current_subset[:])  # Add a copy of current_subset to the result
+        for i in range(start, len(nums)):
+            current_subset.append(nums[i])
+            backtrack(i + 1, current_subset)  # Recur for next elements
+            current_subset.pop()  # Backtrack, remove last element
+    
+    # Start the backtracking process
+    backtrack(0, [])
+    return result
+
+# Example usage
+nums = [1, 2, 3]
+print("All subsets are:", generate_subsets(nums))
+Example Walkthrough (Backtracking):
+Input:
+nums = [1, 2, 3]
+Execution:
+Start with an empty subset: []
+Add 1 to the current subset: [1].
+Add 2 to the current subset: [1, 2].
+Add 3 to the current subset: [1, 2, 3].
+Backtrack, remove 3, then add [1, 3].
+Backtrack, remove 1, add 2 to current subset, then [2].
+Add 3 to [2]: [2, 3].
+Backtrack, remove 2, and then add 3 to the current subset: [3].
+All subsets have been explored.
+
+Final Output:
+The subsets are:
+[[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+Time and Space Complexity:
+Time Complexity:
+
+Iterative Approach: The number of subsets of an array of size n is 2^n. In the worst case, we are generating all subsets, so the time complexity is O(2^n).
+Backtracking Approach: Similarly, the time complexity for backtracking is O(2^n) because we are generating all subsets recursively.
+Space Complexity:
+Iterative Approach: The space complexity is O(2^n), as we store all subsets.
+Backtracking Approach: The space complexity is also O(2^n) for storing the subsets in the result. Additionally, the recursion stack takes O(n) space, so the total space complexity is O(2^n + n).
+
