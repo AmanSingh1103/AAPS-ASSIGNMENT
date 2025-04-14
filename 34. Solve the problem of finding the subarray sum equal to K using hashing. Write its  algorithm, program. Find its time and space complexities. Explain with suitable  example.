@@ -1,0 +1,91 @@
+Problem: Find a Subarray Sum Equal to K Using Hashing
+Given an array of integers and a target sum K, the task is to find the subarray (a contiguous part of the array) whose sum is equal to K. We can use hashing to solve this problem efficiently in O(n) time.
+
+Key Insight:
+The idea is to use a hash map (or dictionary) to store the cumulative sum of the elements encountered so far. The goal is to check if, at any index, the difference between the cumulative sum up to that point and the target sum K has been seen before in the map. If it has, that means there is a subarray whose sum equals K.
+
+Algorithm
+Initialize:
+A hash map (or dictionary) prefix_sum_map to store the frequency of cumulative sums encountered so far.
+Initialize current_sum to 0, which keeps track of the cumulative sum as we iterate through the array.
+Initialize a variable count to 0 to track how many subarrays with sum K we find.
+Iterate over the array:
+For each element num in the array, add num to current_sum.
+Check if current_sum - K exists in prefix_sum_map:
+If it does, it means there is a subarray that sums to K (because current_sum - (current_sum - K) = K).
+Increment count by the number of times current_sum - K has appeared.
+Update the hash map by adding the current cumulative sum (current_sum) to it.
+Return the count of subarrays with sum equal to K.
+
+Python Program:
+def subarraySum(nums, k):
+    # Dictionary to store the frequency of cumulative sums
+    prefix_sum_map = {0: 1}  # Initialize with 0 sum having one occurrence
+    current_sum = 0
+    count = 0
+
+    # Iterate over the array
+    for num in nums:
+        # Update the cumulative sum
+        current_sum += num
+
+        # Check if there exists a subarray whose sum is equal to k
+        if current_sum - k in prefix_sum_map:
+            count += prefix_sum_map[current_sum - k]
+        
+        # Update the frequency of the cumulative sum in the map
+        if current_sum in prefix_sum_map:
+            prefix_sum_map[current_sum] += 1
+        else:
+            prefix_sum_map[current_sum] = 1
+    
+    return count
+
+# Example usage
+nums = [1, 2, 3, 3, 1]
+k = 6
+print("Number of subarrays with sum equal to", k, ":", subarraySum(nums, k))
+Example Walkthrough
+Input:
+nums = [1, 2, 3, 3, 1]
+k = 6
+Execution:
+Initialization: prefix_sum_map = {0: 1}, current_sum = 0, count = 0.
+First Iteration (num = 1):
+current_sum += 1 → current_sum = 1
+current_sum - k = 1 - 6 = -5 is not in the map.
+Add 1 to the map: prefix_sum_map = {0: 1, 1: 1}.
+Second Iteration (num = 2):
+current_sum += 2 → current_sum = 3
+current_sum - k = 3 - 6 = -3 is not in the map.
+Add 3 to the map: prefix_sum_map = {0: 1, 1: 1, 3: 1}.
+Third Iteration (num = 3):
+current_sum += 3 → current_sum = 6
+current_sum - k = 6 - 6 = 0 is in the map with frequency 1.
+Increment count by 1 → count = 1.
+Add 6 to the map: prefix_sum_map = {0: 1, 1: 1, 3: 1, 6: 1}.
+Fourth Iteration (num = 3):
+current_sum += 3 → current_sum = 9
+current_sum - k = 9 - 6 = 3 is in the map with frequency 1.
+Increment count by 1 → count = 2.
+Add 9 to the map: prefix_sum_map = {0: 1, 1: 1, 3: 1, 6: 1, 9: 1}.
+Fifth Iteration (num = 1):
+current_sum += 1 → current_sum = 10
+current_sum - k = 10 - 6 = 4 is not in the map.
+Add 10 to the map: prefix_sum_map = {0: 1, 1: 1, 3: 1, 6: 1, 9: 1, 10: 1}.
+
+Final Output:
+The number of subarrays with sum equal to 6 is 2.
+Time and Space Complexity
+Time Complexity: O(n), where n is the length of the array. We iterate over the array once, and each operation (checking the hash map and updating it) takes constant time.
+
+Space Complexity: O(n), where n is the length of the array. In the worst case, all cumulative sums could be unique, and the hash map would store up to n entries.
+
+Summary Table:
+Metric	Value
+Time Complexity	O(n)
+Space Complexity	O(n)
+Advantages of Hashing in This Problem:
+Efficient Lookup: The use of the hash map allows us to check if a subarray sum equals K in constant time (O(1)).
+
+Avoid Recalculating Sums: Without hashing, we would need to compute sums for all subarrays, which would take O(n^2) time. The hash map prevents redundant calculations and improves the solution to O(n).
