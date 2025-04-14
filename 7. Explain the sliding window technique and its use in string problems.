@@ -1,0 +1,55 @@
+✅ 1. What is the Sliding Window Technique?
+The sliding window technique involves using a window (or subrange) that moves (or "slides") over the data structure (like an array or string) to inspect a portion of it at a time.
+The window is typically defined by two pointers: start and end (or left and right).
+You expand or shrink the window based on the problem's constraints.
+It's especially useful when you need to examine all contiguous subarrays/substrings of size k or with some specific property.
+
+🧠 2. Why Use Sliding Window?
+Because it reduces time complexity:
+Instead of recalculating everything for every new window,
+You reuse previous results and adjust incrementally.
+
+🔍 3. Use Cases in String Problems
+Here are some classic string problems where sliding window shines:
+
+Problem	                                                                                          Use of Sliding Window
+✅ Longest substring without repeating characters                                                	Keep expanding window and remove left chars when a duplicate is found
+✅ Longest substring with at most K distinct characters	                                          Track character frequency in the window and shrink when distinct count > K
+✅ Anagram detection (e.g., find all anagrams of a pattern in a string)                          	Compare frequency maps in a sliding window of length equal to the pattern
+✅ Substring with sum/length/conditions	                                                          Continuously adjust the window to maintain a constraint or calculate a value
+💡 4. Example: Longest Substring Without Repeating Characters
+Problem:
+Find the longest substring of a string s with no repeated characters.
+
+Sliding Window Approach:
+Use a set to track characters in the current window.
+Expand the right end (right) of the window one character at a time.
+If there's a duplicate, shrink the left end (left) until it's gone.
+Track the maximum length during the process.
+
+Python Code:
+def length_of_longest_substring(s):
+    char_set = set()
+    left = 0
+    max_len = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+
+
+⏱️ 5. Time and Space Complexity
+Time: O(n) → Each character is visited at most twice
+Space: O(k) → Where k is the size of the character set (e.g., 26 or 128)
+
+🧾 Summary
+Feature	                                            Description
+What it is	                                        A window (range) that moves across the input
+Where used	                                        Strings, arrays, contiguous subproblems
+Advantage	                                          Reduces time complexity from O(n²) to O(n)
+Common problems	                                    Substrings, anagrams, pattern matching, sums
