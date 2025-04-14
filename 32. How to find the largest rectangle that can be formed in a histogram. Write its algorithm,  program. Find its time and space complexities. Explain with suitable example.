@@ -1,0 +1,107 @@
+✅ Problem Statement
+Given: An array heights[] where each element represents the height of a bar in the histogram, and the width of each bar is 1 unit.
+Goal: Find the area of the largest rectangle that can be formed in the histogram.
+
+Key Points:
+The histogram is represented by an array where the value of each element indicates the height of a bar.
+The width of each bar is uniform (1 unit).
+We are to find the largest rectangle area that can be formed by combining adjacent bars in the histogram.
+
+💡 Key Idea
+To solve this problem efficiently, we can use a monotonic stack approach. The idea is to:
+Use a stack to store indices of the bars.
+Iterate over the histogram bars:
+If the current bar is taller than the bar represented by the index at the top of the stack, push its index onto the stack.
+If the current bar is shorter, it means we need to compute the area for the bars in the stack that are taller than the current bar (i.e., they form a rectangle).
+When we pop from the stack, calculate the area using the popped bar as the smallest bar in the rectangle and the distance between the current index and the index of the next element in the stack.
+
+📘 Algorithm
+Initialize:
+Create an empty stack to store the indices of the bars.
+Initialize a variable max_area to store the maximum area.
+Iterate over the histogram:
+For each bar, check if it is taller than the bar at the top of the stack.
+If yes, push the index of the current bar onto the stack.
+If no, calculate the area using the bar at the top of the stack as the smallest bar in the rectangle, and pop the stack.
+After the loop, there might still be indices in the stack. Pop all elements from the stack and calculate the area.
+
+🧑‍💻 Python Program
+def largestRectangleArea(heights):
+    # Stack to store indices of the histogram's bars
+    stack = []
+    max_area = 0
+    
+    # Iterate through each bar in the histogram
+    for i in range(len(heights)):
+        # Calculate the area of rectangles formed by bars in the stack
+        while stack and heights[stack[-1]] > heights[i]:
+            h = heights[stack.pop()]  # Pop the top element
+            # If the stack is empty, the width of the rectangle is i (full width)
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, h * width)
+        
+        # Push the current bar's index onto the stack
+        stack.append(i)
+    
+    # Calculate the area for the remaining bars in the stack
+    while stack:
+        h = heights[stack.pop()]
+        width = len(heights) if not stack else len(heights) - stack[-1] - 1
+        max_area = max(max_area, h * width)
+    
+    return max_area
+
+# Example usage
+heights = [2, 1, 5, 6, 2, 3]
+print("Largest Rectangle Area:", largestRectangleArea(heights))
+Output:
+Largest Rectangle Area: 10
+
+⏱ Time and Space Complexity
+Metric	Value
+Time Complexity	O(n)
+Space Complexity	O(n)
+Explanation:
+Time Complexity: We traverse the list once, and each element is pushed and popped from the stack only once. Therefore, the time complexity is O(n), where n is the length of the histogram.
+
+Space Complexity: The space used by the stack is proportional to the number of bars in the histogram, which is O(n).
+
+🔍 Example Walkthrough
+Input:
+heights = [2, 1, 5, 6, 2, 3]
+Step-by-Step Execution:
+Initialize:
+stack = [], max_area = 0.
+i = 0, height = 2:
+Stack is empty, so push index 0 onto the stack.
+stack = [0].
+i = 1, height = 1:
+heights[stack[-1]] > heights[i], so pop from stack:
+Pop index 0, height 2.
+Calculate area: width = 1, area = 2 * 1 = 2.
+stack = [], push index 1.
+stack = [1].
+i = 2, height = 5:
+Stack is empty, so push index 2 onto the stack.
+stack = [1, 2].
+i = 3, height = 6:
+heights[stack[-1]] < heights[i], so push index 3.
+stack = [1, 2, 3].
+i = 4, height = 2:
+heights[stack[-1]] > heights[i], so pop from stack:
+Pop index 3, height 6, width = 1, area = 6 * 1 = 6.
+Pop index 2, height 5, width = 2, area = 5 * 2 = 10.
+stack = [1], push index 4.
+stack = [1, 4].
+i = 5, height = 3:
+heights[stack[-1]] < heights[i], so push index 5.
+stack = [1, 4, 5].
+End of iteration:
+Pop the remaining elements from the stack:
+Pop index 5, height 3, width = 1, area = 3 * 1 = 3.
+Pop index 4, height 2, width = 4, area = 2 * 4 = 8.
+Pop index 1, height 1, width = 6, area = 1 * 6 = 6.
+Result: The largest area is 10.
+
+Final Output:
+Largest Rectangle Area: 10
