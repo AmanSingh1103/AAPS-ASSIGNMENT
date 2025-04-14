@@ -1,0 +1,87 @@
+We are given an array of integers, and our goal is to find the k most frequent elements in the array. We can solve this problem efficiently using a priority queue (or a heap).
+
+Approach:
+Count the Frequency:
+First, count the frequency of each element in the array using a hash map (dictionary).
+Use a Priority Queue:
+We use a min-heap (priority queue) to keep track of the top k frequent elements. A min-heap allows us to easily maintain the top k most frequent elements.
+If the heap exceeds size k, remove the element with the smallest frequency to ensure the heap only contains the k most frequent elements.
+Return the Top k Elements:
+After processing all elements, the heap will contain the k most frequent elements.
+
+Algorithm:
+Create a Frequency Map: Use a hash map to store the frequency of each element in the array.
+Build a Min-Heap: Use a priority queue (min-heap) where each element is stored as a tuple of (frequency, element).
+Heap Size Control: While iterating through the frequency map, add the element to the heap. If the heap exceeds size k, remove the element with the smallest frequency.
+Extract the Top k Elements: Once all elements have been processed, the heap will contain the top k frequent elements.
+
+Algorithm:
+Initialize a hash map frequency_map to store the frequency of each element.
+Traverse the input array and update the frequency of each element in the frequency_map.
+Create a min-heap and push elements from frequency_map into the heap, each element as a tuple (frequency, element).
+If the heap size exceeds k, pop the element with the smallest frequency.
+After processing all elements, the heap will contain the top k frequent elements.
+
+Python Program:
+import heapq
+from collections import Counter
+
+def k_most_frequent_elements(nums, k):
+    # Step 1: Count the frequency of each element
+    frequency_map = Counter(nums)
+    
+    # Step 2: Create a min-heap to store (frequency, element) pairs
+    min_heap = []
+    
+    # Step 3: Push elements into the heap
+    for num, freq in frequency_map.items():
+        heapq.heappush(min_heap, (freq, num))
+        
+        # Step 4: If heap size exceeds k, pop the smallest frequency element
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+    
+    # Step 5: Extract the top k frequent elements
+    result = []
+    while min_heap:
+        result.append(heapq.heappop(min_heap)[1])
+    
+    # The result list contains the k most frequent elements, but in ascending order of frequency.
+    # Reverse it to return in descending order of frequency.
+    return result[::-1]
+
+# Example usage
+nums = [1, 1, 1, 2, 2, 3]
+k = 2
+print("The", k, "most frequent elements are:", k_most_frequent_elements(nums, k))
+Example Walkthrough:
+Input:
+nums = [1, 1, 1, 2, 2, 3]
+k = 2
+Execution:
+Count Frequencies:
+frequency_map = {1: 3, 2: 2, 3: 1}
+Min-Heap Creation: We create a min-heap and insert each element as a tuple (frequency, element):
+Insert (3, 1) → Heap: [(3, 1)]
+Insert (2, 2) → Heap: [(2, 2), (3, 1)]
+Insert (1, 3) → Heap: [(1, 3), (3, 1), (2, 2)]
+Since the heap exceeds size k=2, we pop the smallest element (1, 3) → Heap: [(2, 2), (3, 1)]
+Final Heap: After processing all elements, the heap contains the top 2 most frequent elements: [(2, 2), (3, 1)].
+Return the Result: Extract the elements in reverse order: [2, 1].
+Thus, the output is:
+The 2 most frequent elements are: [1, 2]
+Time and Space Complexity:
+Time Complexity:
+Counting frequencies: O(n), where n is the number of elements in the array.
+Building the heap: Inserting each element into the heap takes O(log k) time (heap size is at most k).
+Total time complexity: O(n log k) because we insert each of the n elements into the heap.
+
+Space Complexity:
+Frequency map: O(n) space for storing the frequencies of all elements.
+Heap: O(k) space for storing the k most frequent elements.
+Total space complexity: O(n + k), where n is the number of unique elements and k is the number of top frequent elements to track.
+
+Summary:
+Metric	Value
+Time Complexity	O(n log k)
+Space Complexity	O(n + k)
