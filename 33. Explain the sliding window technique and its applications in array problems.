@@ -1,0 +1,34 @@
+Sliding Window Technique
+The sliding window technique is a method used to solve problems involving subarrays or substrings within a larger array or string, often when you're looking for a contiguous subsequence that satisfies certain conditions (e.g., maximum sum, minimum length, etc.). The basic idea is to maintain a window of fixed size (or variable size) that "slides" over the array, typically from left to right, while processing the array in a single pass.
+The sliding window technique helps solve problems efficiently, especially when the solution involves finding something over all possible subarrays or substrings, without the need to recompute the same values multiple times
+How Sliding Window Works:
+Initialize the Window:
+The "window" refers to a subarray (or substring) that moves across the larger array or string. Initially, the window may contain the first few elements, and it expands or contracts depending on the problem.
+Slide the Window:
+After processing the elements in the current window, slide the window by removing the element on the left side (or the right, depending on the type of problem) and adding the next element on the right.
+Update the Window's State:
+As the window slides, update the solution based on the contents of the current window. This could involve calculating sums, maximum or minimum values, checking conditions, etc.
+Types of Sliding Window Techniques:
+Fixed-Size Sliding Window:
+The window always contains a fixed number of elements.
+Used for problems like finding the maximum sum of a subarray of size k, etc.
+Variable-Size Sliding Window:
+The window can vary in size, depending on certain conditions (e.g., meeting a target sum).
+Used for problems like finding the smallest subarray with a sum greater than a given value.
+Applications of the Sliding Window Technique:
+The sliding window technique is widely used in various array and string problems because it helps reduce time complexity by preventing redundant calculations. Here are a few common problems where the sliding window technique can be applied:
+
+1. Maximum Sum Subarray of Size K:
+Problem: Given an array of integers, find the maximum sum of any subarray of size k.
+Explanation: The window starts with the first k elements, and as we move the window, we update the sum by subtracting the element that is going out of the window and adding the element coming into the window.
+Time Complexity: O(n), where n is the number of elements in the array.
+
+def max_sum_subarray(arr, k):
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]
+        max_sum = max(max_sum, window_sum)
+    
+    return max_sum
