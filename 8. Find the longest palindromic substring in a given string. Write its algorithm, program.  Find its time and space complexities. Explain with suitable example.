@@ -1,0 +1,55 @@
+✅ 1. Problem Statement
+Given: A string s
+Goal: Find the longest substring of s that is a palindrome (reads the same forward and backward).
+
+✅ 2. Algorithm (Expand Around Center)
+Idea:
+A palindrome mirrors around its center. For each character (or pair of characters), try to expand outward as long as the characters match.
+
+Steps:
+Initialize start = 0, end = 0 to track the longest palindrome.
+For each index i in the string:
+Expand around one center (odd-length palindrome): from i
+Expand around two centers (even-length palindrome): from i and i+1
+Update start and end if a longer palindrome is found.
+Return the substring from start to end.
+
+💻 3. Python Program
+def expand_from_center(s, left, right):
+    while left >= 0 and right < len(s) and s[left] == s[right]:
+        left -= 1
+        right += 1
+    return right - left - 1  # Length of the palindrome
+
+def longest_palindromic_substring(s):
+    if not s or len(s) == 0:
+        return ""
+
+    start, end = 0, 0
+    for i in range(len(s)):
+        len1 = expand_from_center(s, i, i)      # Odd-length palindrome
+        len2 = expand_from_center(s, i, i + 1)  # Even-length palindrome
+        max_len = max(len1, len2)
+        if max_len > (end - start):
+            start = i - (max_len - 1) // 2
+            end = i + max_len // 2
+
+    return s[start:end + 1]
+
+# Example usage
+s = "babad"
+result = longest_palindromic_substring(s)
+print(f"Longest palindromic substring: {result}")
+
+⏱️ 4. Time and Space Complexities
+Operation	              Complexity
+Time Complexity        	O(n²)
+Space Complexity      	O(1)
+We check for palindromes by expanding from the center, which can take O(n) for each of n characters.
+
+No extra data structures used → constant space.
+
+🔍 5. Example Explanation
+Input:
+s = "babad"
+Possible palindromes: "bab", "aba"
