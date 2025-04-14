@@ -1,0 +1,107 @@
+Problem: Maximum Subarray Sum using Kadane’s Algorithm
+Kadane’s algorithm is a famous algorithm to find the maximum sum of a contiguous subarray within a one-dimensional numeric array.
+
+Approach:
+Kadane's algorithm works by iterating through the array while maintaining two variables:
+
+current_sum: Tracks the sum of the subarray ending at the current position.
+
+max_sum: Keeps track of the maximum sum found so far.
+
+Steps:
+Initialize:
+Set current_sum to arr[0] (the first element).
+Set max_sum to arr[0].
+Iterate through the array starting from the second element:
+For each element, decide whether to:
+Add the current element to current_sum (extend the current subarray).
+Start a new subarray from the current element.
+Update max_sum if current_sum is greater than max_sum.
+Return max_sum, which will contain the maximum sum of a contiguous subarray.
+
+Algorithm:
+Initialize current_sum and max_sum as the first element of the array.
+Loop through the array from the second element.
+Update current_sum as the maximum of the current element itself or the sum of the current element and current_sum.
+Update max_sum with the maximum of max_sum and current_sum.
+Return max_sum after the loop finishes.
+
+Python Code:
+def max_subarray_sum(arr):
+    # Edge case: if the array is empty
+    if not arr:
+        return 0
+    
+    # Initialize current_sum and max_sum as the first element
+    current_sum = max_sum = arr[0]
+    
+    # Iterate through the array starting from the second element
+    for i in range(1, len(arr)):
+        # Update current_sum to either current element or current_sum + current element
+        current_sum = max(arr[i], current_sum + arr[i])
+        
+        # Update max_sum if current_sum is greater
+        max_sum = max(max_sum, current_sum)
+    
+    return max_sum
+
+# Example usage
+arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+print("Maximum subarray sum is:", max_subarray_sum(arr))
+Explanation with Example:
+Input:
+
+arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+Process:
+
+Initialization:
+current_sum = -2
+max_sum = -2
+Iterate through the array:
+For 1:
+current_sum = max(1, -2 + 1) = 1
+max_sum = max(-2, 1) = 1
+
+For -3:
+current_sum = max(-3, 1 + -3) = -2
+max_sum = max(1, -2) = 1
+
+For 4:
+current_sum = max(4, -2 + 4) = 4
+max_sum = max(1, 4) = 4
+
+For -1:
+current_sum = max(-1, 4 + -1) = 3
+max_sum = max(4, 3) = 4
+
+For 2:
+current_sum = max(2, 3 + 2) = 5
+max_sum = max(4, 5) = 5
+
+For 1:
+current_sum = max(1, 5 + 1) = 6
+max_sum = max(5, 6) = 6
+
+For -5:
+current_sum = max(-5, 6 + -5) = 1
+max_sum = max(6, 1) = 6
+
+For 4:
+current_sum = max(4, 1 + 4) = 5
+max_sum = max(6, 5) = 6
+
+Final Output:
+max_sum = 6
+
+Output:
+Maximum subarray sum is: 6
+
+Time and Space Complexity:
+Time Complexity:
+
+O(n): We iterate through the array once, where n is the number of elements in the array.
+
+Space Complexity:
+
+O(1): We use only a constant amount of space for current_sum and max_sum.
+
