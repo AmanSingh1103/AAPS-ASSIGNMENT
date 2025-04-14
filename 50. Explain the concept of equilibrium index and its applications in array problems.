@@ -1,0 +1,83 @@
+Concept of Equilibrium Index
+The equilibrium index of an array is an index where the sum of elements to its left is equal to the sum of elements to its right. In other words, for an array arr, an index i is called an equilibrium index if the following condition holds:
+
+sum(𝑎𝑟𝑟[0],𝑎𝑟𝑟[1],…,𝑎𝑟𝑟[𝑖−1])=sum(𝑎𝑟𝑟[𝑖+1],𝑎𝑟𝑟[𝑖+2],…,𝑎𝑟𝑟[𝑛−1])
+Where sum(0, i-1) represents the sum of all elements to the left of index i, and sum(i+1, n-1) represents the sum of all elements to the right of index i.
+
+Applications of Equilibrium Index
+The equilibrium index is useful in several types of problems, especially those involving balanced divisions of arrays. Here are a few applications of equilibrium index:
+Balanced Partition: Identifying if an array can be partitioned into two subarrays with equal sums. The equilibrium index is a natural fit for this type of problem, as it essentially provides the partition point where both sides have equal sums.
+Load Balancing: In distributed systems, finding an equilibrium index can represent a point where the load (sum of tasks) on the left side is equal to the load on the right side.
+Data Balancing: In certain algorithms, it is required to balance data, and the equilibrium index can be used to ensure that the data on both sides of an index are equal.
+Subset Sum Problems: Equilibrium index can be used to break down subset sum problems into smaller, manageable parts, ensuring a more efficient solution.
+
+Algorithm to Find the Equilibrium Index
+Calculate the total sum of the array.
+Iterate through the array, and for each element:
+Subtract the current element from the total sum.
+Check if the left sum (which is the sum of elements before the current index) equals the remaining right sum (total sum after subtracting the current element and the left sum).
+If they are equal, return the current index as the equilibrium index.
+
+Algorithm:
+Compute the total sum of the array.
+Initialize left_sum to 0.
+Iterate over each element:
+Subtract the current element from total_sum (this gives the right sum).
+If left_sum equals the right_sum, return the current index as the equilibrium index.
+Otherwise, update left_sum by adding the current element.
+If no equilibrium index is found, return -1 (indicating there is no equilibrium index).
+
+Python Code:
+def find_equilibrium_index(arr):
+    # Step 1: Compute the total sum of the array
+    total_sum = sum(arr)
+    left_sum = 0
+    
+    # Step 2: Traverse the array and find the equilibrium index
+    for i in range(len(arr)):
+        # Subtract the current element from the total sum
+        total_sum -= arr[i]
+        
+        # Check if left_sum equals the right_sum
+        if left_sum == total_sum:
+            return i
+        
+        # Update the left_sum for the next iteration
+        left_sum += arr[i]
+    
+    return -1  # No equilibrium index found
+
+# Example usage
+arr = [1, 3, 5, 2, 2]
+result = find_equilibrium_index(arr)
+print("Equilibrium Index:", result)
+Explanation with Example:
+Example 1:
+Input: arr = [1, 3, 5, 2, 2]
+
+Process:
+Total sum = 13.
+For i = 0, left_sum = 0, right_sum = 13 - 1 = 12. (No equilibrium)
+For i = 1, left_sum = 1, right_sum = 13 - 1 - 3 = 9. (No equilibrium)
+For i = 2, left_sum = 4, right_sum = 13 - 1 - 3 - 5 = 4. (Equilibrium index found at i = 2)
+Output: Equilibrium Index: 2
+
+Example 2:
+Input: arr = [1, 2, 3]
+Process:
+Total sum = 6.
+For i = 0, left_sum = 0, right_sum = 6 - 1 = 5. (No equilibrium)
+For i = 1, left_sum = 1, right_sum = 6 - 1 - 2 = 3. (No equilibrium)
+For i = 2, left_sum = 3, right_sum = 6 - 1 - 2 - 3 = 0. (No equilibrium)
+
+Output: Equilibrium Index: -1 (No equilibrium index)
+
+Time and Space Complexity:
+Time Complexity:
+
+O(n): We calculate the total sum in O(n) time and then traverse the array once to find the equilibrium index, resulting in a total time complexity of O(n).
+
+Space Complexity:
+
+O(1): We use only a few extra variables (left_sum and total_sum), so the space complexity is O(1).
+
