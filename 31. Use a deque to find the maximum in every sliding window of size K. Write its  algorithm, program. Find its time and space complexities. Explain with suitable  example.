@@ -1,0 +1,100 @@
+✅ Problem Statement
+Given: An array arr[] of integers and an integer K,
+Goal: For each sliding window of size K in the array, find the maximum element in that window.
+
+💡 Key Idea
+We can use a deque (double-ended queue) to efficiently store the indices of elements in the current sliding window. The deque will help us track the indices of elements in such a way that:
+The largest element is always at the front of the deque.
+We maintain the deque in such a way that all smaller elements, which will never be useful as the maximum in future windows, are removed.
+
+Key Points:
+Sliding Window: The window slides one element at a time, so we need to:
+Add a new element at the end of the window.
+Remove the element that is going out of the window.
+
+Deque Properties:
+Maintain the deque such that indices of the elements in arr[] are stored in decreasing order of their values.
+For each new element, remove all smaller elements from the back of the deque (since they will never be the maximum in the future windows).
+The element at the front of the deque is the maximum for the current window.
+
+📘 Algorithm
+Initialize:
+An empty deque.
+Iterate through the array, sliding the window.
+For each element:
+Remove indices from the back of the deque as long as the current element is greater than or equal to the elements in the deque.
+Add the current index to the deque.
+Remove the index of the element that is out of the window's range.
+The element at the front of the deque is the maximum for the current window.
+Return the results for each window.
+
+🧑‍💻 Python Program
+from collections import deque
+
+def max_sliding_window(arr, k):
+    # Deque to store indices of useful elements in current window
+    dq = deque()
+    max_elements = []
+
+    for i in range(len(arr)):
+        # Remove indices of elements not in the current window
+        if dq and dq[0] < i - k + 1:
+            dq.popleft()
+
+        # Remove all elements smaller than the current element
+        while dq and arr[dq[-1]] < arr[i]:
+            dq.pop()
+
+        # Add current element's index to the deque
+        dq.append(i)
+
+        # Start adding to the result once the window is fully traversed
+        if i >= k - 1:
+            max_elements.append(arr[dq[0]])  # The element at the front is the max in the window
+
+    return max_elements
+
+# Example usage
+arr = [1, 3, -1, -3, 5, 3, 6, 7]
+k = 3
+print("Maximums in every sliding window of size", k, ":", max_sliding_window(arr, k))
+Output:
+Maximums in every sliding window of size 3 : [3, 3, 5, 5, 5, 6, 7]
+
+⏱ Time and Space Complexity
+Metric	Value
+Time Complexity	O(n)
+Space Complexity	O(k)
+Explanation:
+Time Complexity: Each element is added and removed from the deque at most once. Therefore, the time complexity for each element is O(1), making the overall time complexity O(n), where n is the length of the input array.
+
+Space Complexity: The deque stores indices of elements from the current window. The maximum size of the deque is O(k), where k is the size of the sliding window.
+
+🔍 Example Walkthrough
+Input:
+arr = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
+Step-by-Step Execution:
+Initial deque: empty.
+Iterate over each element of the array:
+i = 0, element = 1:
+Deque = [0] (only one element).
+No result yet since window size is less than k.
+i = 1, element = 3:
+Remove 1 from deque since 3 is greater.
+Deque = [1] (max for window [1, 3] is 3).
+i = 2, element = -1:
+Deque = [1, 2] (max for window [1, 3, -1] is 3).
+i = 3, element = -3:
+Deque = [1, 2, 3] (max for window [3, -1, -3] is 3).
+i = 4, element = 5:
+Remove -3 and -1 from deque since 5 is greater.
+Deque = [4] (max for window [-1, -3, 5] is 5).
+i = 5, element = 3:
+Deque = [4, 5] (max for window [-3, 5, 3] is 5).
+i = 6, element = 6:
+Remove 3 from deque since 6 is greater.
+Deque = [6] (max for window [5, 3, 6] is 6).
+i = 7, element = 7:
+Remove 6 from deque since 7 is greater.
+Deque = [7] (max for window [3, 6, 7] is 7).
+Result: [3, 3, 5, 5, 5, 6, 7]
