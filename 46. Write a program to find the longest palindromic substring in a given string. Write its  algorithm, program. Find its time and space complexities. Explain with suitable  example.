@@ -1,0 +1,84 @@
+Problem: Find the Longest Palindromic Substring in a Given String
+The problem asks to find the longest substring within a given string that is a palindrome. A palindrome is a string that reads the same forward and backward (e.g., "madam" or "racecar").
+
+Approach:
+There are several approaches to solve this problem, but one of the most efficient is the expand-around-center technique. This method takes advantage of the fact that a palindrome mirrors around its center.
+
+Approach Explanation:
+Expand Around Center:
+A palindrome can be expanded from its center. For example, in "racecar", the center is the letter 'e' (or between the two 'c's if considering even-length palindromes).
+There are two possible centers for any palindrome: one character (for odd-length palindromes) or between two characters (for even-length palindromes).
+Start from each character and expand outwards to check for a palindrome.
+Iterate over each character in the string:
+For each character, treat it as the center of a potential palindrome and try expanding outwards to find the longest palindrome centered at that character (both for odd and even length palindromes).
+Keep track of the maximum length palindrome found during the iteration.
+
+Algorithm:
+Initialize start and end indices to keep track of the longest palindromic substring.
+For each index in the string, expand around the center to find the longest palindrome for both odd and even lengths.
+Update start and end if a longer palindrome is found.
+Return the substring using the indices start and end.
+
+Python Code:
+def longest_palindromic_substring(s: str) -> str:
+    # Function to expand around the center
+    def expand_around_center(left: int, right: int) -> str:
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return s[left + 1:right]
+
+    # If the string is empty
+    if not s:
+        return ""
+
+    longest = ""
+    
+    # Loop through each character in the string
+    for i in range(len(s)):
+        # Find the longest odd-length palindrome centered at s[i]
+        odd_palindrome = expand_around_center(i, i)
+        # Find the longest even-length palindrome centered at s[i]
+        even_palindrome = expand_around_center(i, i + 1)
+        
+        # Update longest palindrome if a longer one is found
+        if len(odd_palindrome) > len(longest):
+            longest = odd_palindrome
+        if len(even_palindrome) > len(longest):
+            longest = even_palindrome
+
+    return longest
+
+# Example usage
+s = "babad"
+result = longest_palindromic_substring(s)
+print("Longest Palindromic Substring:", result)
+Explanation with Example:
+Example 1:
+Input: s = "babad"
+
+Process:
+At i = 0, expand around the center and find b (odd-length palindrome) and bab (odd-length palindrome).
+At i = 1, expand around the center and find aba (odd-length palindrome).
+At i = 2, expand around the center and find a (odd-length palindrome).
+At i = 3, expand around the center and find d (odd-length palindrome).
+The longest palindromic substring is "bab".
+
+Output: "bab"
+Example 2:
+Input: s = "cbbd"
+Process:
+At i = 0, expand around the center and find c (odd-length palindrome).
+At i = 1, expand around the center and find bb (even-length palindrome).
+The longest palindromic substring is "bb".
+Output: "bb"
+
+Time and Space Complexity:
+Time Complexity:
+
+The algorithm iterates over each character in the string. For each character, it tries to expand around the center, which can take O(n) time in the worst case, where n is the length of the string.
+Thus, the overall time complexity is O(n^2), where n is the length of the string.
+
+Space Complexity:
+The space complexity is O(1), since we only use a few extra variables to store the current longest palindrome and the indices for expanding the center. The function expand_around_center does not use extra space for storing palindromes; it returns substrings directly.
+
