@@ -1,0 +1,100 @@
+✅ Problem Statement
+Given: A n x n matrix where each row and each column is sorted in ascending order.
+Task: Find the k-th smallest element in the matrix.
+
+🔍 Example
+Input:
+matrix = [
+  [1,  5,  9],
+  [10, 11, 13],
+  [12, 13, 15]
+]
+k = 8
+Output:
+13 (the 8th smallest element in the matrix)
+💡 Approach: Binary Search on Value Range
+Instead of treating the matrix like a flat array and sorting it, we use binary search on the value range — from the smallest to the largest element in the matrix.
+
+🔢 Steps:
+Set low = matrix[0][0], high = matrix[n-1][n-1]
+While low < high:
+Compute mid = (low + high) // 2
+Count the number of elements ≤ mid in the matrix
+If count < k → move low up
+Else → move high down
+When low == high, it will be the k-th smallest
+
+📘 Algorithm
+Function kthSmallest(matrix, k):
+    n = number of rows (or columns)
+    low = matrix[0][0]
+    high = matrix[n-1][n-1]
+
+    While low < high:
+        mid = (low + high) // 2
+        count = countLessEqual(matrix, mid)
+
+        If count < k:
+            low = mid + 1
+        Else:
+            high = mid
+
+    Return low
+
+Function countLessEqual(matrix, mid):
+    count = 0
+    row = n - 1, col = 0
+
+    While row >= 0 and col < n:
+        If matrix[row][col] <= mid:
+            count += row + 1
+            col += 1
+        Else:
+            row -= 1
+
+    Return count
+🧑‍💻 Python Program
+def count_less_equal(matrix, mid):
+    count = 0
+    n = len(matrix)
+    row, col = n - 1, 0
+
+    while row >= 0 and col < n:
+        if matrix[row][col] <= mid:
+            count += row + 1
+            col += 1
+        else:
+            row -= 1
+    return count
+
+def kth_smallest(matrix, k):
+    n = len(matrix)
+    low = matrix[0][0]
+    high = matrix[-1][-1]
+
+    while low < high:
+        mid = (low + high) // 2
+        if count_less_equal(matrix, mid) < k:
+            low = mid + 1
+        else:
+            high = mid
+
+    return low
+
+# Example usage
+matrix = [
+  [1,  5,  9],
+  [10, 11, 13],
+  [12, 13, 15]
+]
+k = 8
+print("K-th smallest element:", kth_smallest(matrix, k))
+⏱ Time and Space Complexity
+Metric	Value
+Time Complexity	O(n * log(max - min))
+Space Complexity	O(1)
+n: matrix size
+
+max - min: range of numbers in the matrix
+
+The binary search loop runs log(max - min) times, and each count operation is O(n)
