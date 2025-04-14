@@ -1,0 +1,53 @@
+✅ 1. Problem Statement
+Given: A string s
+Goal: Find the length of the longest substring that contains no repeated characters.
+
+✅ 2. Algorithm (Sliding Window + Hash Set)
+This is solved efficiently using the sliding window technique:
+
+Steps:
+Use two pointers left and right to define the current window.
+Use a set to store characters in the current window.
+Move the right pointer:
+If the character at right is not in the set, add it and update max_length.
+If it is in the set, remove characters from the left until the duplicate is removed.
+Continue until right reaches the end of the string.
+
+💻 3. Python Program
+def length_of_longest_substring(s):
+    char_set = set()
+    left = 0
+    max_length = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+
+    return max_length
+
+# Example usage
+s = "abcabcbb"
+print(f"Length of longest substring without repeating characters: {length_of_longest_substring(s)}")
+
+⏱️ 4. Time and Space Complexities
+Operation	              Complexity
+Time Complexity	        O(n)
+Space Complexity	      O(k)
+n is the length of the string.
+
+k is the size of the character set (e.g., 26 for lowercase letters, 128 for ASCII).
+
+🔍 5. Example Explanation
+Input:
+s = "abcabcbb"
+Step-by-step substrings without repeats:
+abc → length = 3
+bca → length = 3
+cab → length = 3
+So the longest substring is "abc" with length 3.
+
+✅ Output:
+Length of longest substring without repeating characters: 3
