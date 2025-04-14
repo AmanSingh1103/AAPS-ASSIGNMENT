@@ -1,0 +1,57 @@
+✅ 1. Problem Statement
+Given:
+An array arr[] of n integers, and an integer k.
+Goal:
+Find the maximum sum of any contiguous subarray of size k.
+
+✅ 2. Algorithm (Sliding Window Technique)
+Calculate the sum of the first k elements.
+Use a sliding window of size k:
+For each step from index k to n-1:
+Subtract the element going out of the window
+Add the new element coming into the window
+Update the max sum if the current window sum is greater
+Return the max sum.
+
+💻 3. Python Program
+def max_sum_subarray(arr, k):
+    n = len(arr)
+    if n < k:
+        return "Invalid: window size is larger than array size."
+
+    # Step 1: Compute sum of first window
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+
+    # Step 2: Slide the window
+    for i in range(k, n):
+        window_sum = window_sum - arr[i - k] + arr[i]
+        max_sum = max(max_sum, window_sum)
+
+    return max_sum
+
+# Example usage
+arr = [2, 1, 5, 1, 3, 2]
+k = 3
+result = max_sum_subarray(arr, k)
+print(f"Maximum sum of subarray of size {k} is: {result}")
+
+⏱️ 4. Time and Space Complexities
+Operation	                Complexity
+Time Complexity	          O(n)
+Space Complexity	        O(1)
+Only one full pass after the initial sum.
+Constant space used, no extra arrays.
+
+🔍 5. Example Explanation
+Input:
+arr = [2, 1, 5, 1, 3, 2]
+k = 3
+Initial window (first 3): 2 + 1 + 5 = 8
+Slide window:
+Remove 2, add 1 → 1 + 5 + 1 = 7
+Remove 1, add 3 → 5 + 1 + 3 = 9 ✅ Max updated
+Remove 5, add 2 → 1 + 3 + 2 = 6
+
+✅ Output:
+Maximum sum of subarray of size 3 is: 9
