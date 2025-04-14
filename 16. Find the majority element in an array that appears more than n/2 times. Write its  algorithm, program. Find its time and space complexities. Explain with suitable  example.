@@ -1,0 +1,71 @@
+✅ Problem Statement
+Given: An array of size n
+Task: Find the element that appears more than n/2 times (called the majority element).
+Assumption: There always exists such an element.
+
+🔍 Example
+Input:
+nums = [2, 2, 1, 1, 1, 2, 2]
+Output:
+2 (it appears 4 times, and n = 7 → n/2 = 3.5)
+💡 Efficient Approach: Boyer-Moore Voting Algorithm
+🧠 Intuition:
+We cancel out different elements. The majority element will remain in the end.
+Maintain a candidate and a count.
+If count is 0 → choose new candidate
+If current number == candidate → increment count
+Else → decrement count
+
+📘 Algorithm
+Function majorityElement(nums):
+    count = 0
+    candidate = None
+
+    For each num in nums:
+        If count == 0:
+            candidate = num
+        If num == candidate:
+            count += 1
+        Else:
+            count -= 1
+
+    Return candidate
+🧑‍💻 Python Code
+def majority_element(nums):
+    count = 0
+    candidate = None
+
+    for num in nums:
+        if count == 0:
+            candidate = num
+        count += (1 if num == candidate else -1)
+
+    return candidate
+
+# Example usage
+nums = [2, 2, 1, 1, 1, 2, 2]
+print("Majority Element:", majority_element(nums))
+⏱ Time and Space Complexity
+Metric	Value
+Time Complexity	O(n)
+Space Complexity	O(1)
+One pass through the array
+
+No extra space used
+
+✅ Explanation of the Example
+Input:
+[2, 2, 1, 1, 1, 2, 2]
+Steps:
+count = 0, candidate becomes 2
+
+2 → count = 1
+2 → count = 2
+1 → count = 1
+1 → count = 0
+1 → candidate becomes 1, count = 1
+2 → count = 0
+2 → candidate becomes 2, count = 1
+
+➡️ Final candidate: 2 ✅
+
