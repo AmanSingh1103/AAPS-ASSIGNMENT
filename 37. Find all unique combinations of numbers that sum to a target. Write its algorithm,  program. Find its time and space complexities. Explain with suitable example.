@@ -1,0 +1,92 @@
+Problem: Find All Unique Combinations of Numbers That Sum to a Target
+Given a list of numbers and a target value, the goal is to find all unique combinations of numbers in the list that sum up to the target. You can use each number multiple times, but the combination of numbers should be unique (i.e., the order of the numbers doesn't matter).
+
+Approach:
+Backtracking: The problem can be efficiently solved using a backtracking approach where we recursively explore different combinations of numbers that sum up to the target.
+Sorting the Array: Before starting the backtracking, we should sort the array to facilitate pruning (avoiding unnecessary combinations).
+Avoiding Duplicates: To ensure unique combinations, we need to skip over duplicates when selecting numbers for the combination.
+
+Steps:
+Sort the Input: This helps with pruning and ensures that combinations are generated in non-decreasing order.
+Backtrack Function: The function will explore different numbers starting from the current index. If the current number is greater than the target, it will stop exploring further.
+Base Case: If the target becomes zero, a valid combination is found and added to the result.
+Pruning: To avoid duplicates, skip over any number that is the same as the previous one.
+
+Algorithm:
+Sort the Input Array.
+Define a helper function (backtrack) that will:
+Recursively generate combinations by including numbers starting from the current index.
+If the sum exceeds the target, return.
+If the sum equals the target, record the combination.
+Iterate through the array and use the backtrack function to explore combinations.
+
+Python Program:
+def combination_sum(candidates, target):
+    result = []
+    
+    # Sort the candidates to handle duplicates and make pruning easier
+    candidates.sort()
+
+    def backtrack(start, current_combination, current_sum):
+        # Base case: if current_sum equals the target, store the combination
+        if current_sum == target:
+            result.append(current_combination[:])
+            return
+        # If the current sum exceeds the target, stop exploring this path
+        if current_sum > target:
+            return
+        
+        for i in range(start, len(candidates)):
+            # Skip duplicates to avoid redundant combinations
+            if i > start and candidates[i] == candidates[i - 1]:
+                continue
+            
+            # Include candidates[i] and explore further
+            current_combination.append(candidates[i])
+            backtrack(i, current_combination, current_sum + candidates[i])
+            # Backtrack: remove the last element
+            current_combination.pop()
+
+    # Start the backtracking process
+    backtrack(0, [], 0)
+    return result
+
+# Example usage
+candidates = [2, 3, 6, 7]
+target = 7
+print("Unique combinations that sum to", target, "are:", combination_sum(candidates, target))
+Example Walkthrough:
+Input:
+candidates = [2, 3, 6, 7]
+target = 7
+Execution:
+Sort the Array: [2, 3, 6, 7].
+Backtrack Function:
+Start with an empty combination [] and a current sum of 0.
+Add 2 → Combination: [2], Sum: 2.
+Add another 2 → Combination: [2, 2], Sum: 4.
+Add another 2 → Combination: [2, 2, 2], Sum: 6.
+Add 3 → Combination: [2, 2, 2, 3], Sum: 9 (exceeds target).
+Backtrack, remove last 3, then remove last 2, and try the next candidate 3 → Combination: [2, 3], Sum: 5.
+Add another 3 → Combination: [2, 3, 3], Sum: 8 (exceeds target).
+Backtrack, and try the next candidate 6 → Combination: [6], Sum: 6.
+Add 7 → Combination: [7], Sum: 7 (this is a valid combination).
+Final Result: The combinations that sum to 7 are:
+[[2, 2, 3], [7]]
+Time and Space Complexity:
+Time Complexity:
+The time complexity depends on the number of combinations generated and the length of the candidates list.
+In the worst case, the algorithm explores all possible combinations of numbers. Since we can repeat numbers, there are a maximum of O(2^n) possible combinations. Thus, the time complexity is O(2^n), where n is the number of candidates in the list.
+
+Space Complexity:
+The space complexity is O(k), where k is the maximum size of a combination (since we store each valid combination). Additionally, the recursion stack may also take O(k) space in the worst case.
+Overall space complexity is O(k * 2^n) due to the storage of combinations in the result.
+
+Summary:
+Metric	Value
+Time Complexity	O(2^n)
+Space Complexity	O(k * 2^n)
+Explanation with Example:
+For the input:
+candidates = [2, 3, 6, 7]
+target = 7
