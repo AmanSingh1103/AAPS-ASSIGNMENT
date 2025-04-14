@@ -1,0 +1,69 @@
+✅ 1. Problem Statement
+Given: A string s
+Goal: Find all possible permutations of the string.
+
+✅ 2. Algorithm (Backtracking Approach)
+Idea:
+Use a backtracking approach to generate all possible permutations by swapping characters.
+For each position in the string, recursively generate permutations by swapping the current character with the next characters.
+Once all characters have been swapped, a valid permutation is generated.
+Backtrack to undo the swap and explore other possibilities.
+
+Steps:
+Start with the first character of the string.
+Swap the current character with all remaining characters and recurse.
+For each swap, continue the process until all characters are swapped.
+Keep track of the current permutation and add it to the result when all characters are processed.
+Backtrack by undoing the swap after exploring each possibility.
+
+💻 3. Python Program
+def permute(s):
+    result = []
+
+    def backtrack(start):
+        # Base case: if we have reached the end of the string
+        if start == len(s):
+            result.append(''.join(s))  # Add the permutation to result
+            return
+        
+        for i in range(start, len(s)):
+            # Swap the current index with the start index
+            s[start], s[i] = s[i], s[start]
+            
+            # Recurse to generate further permutations
+            backtrack(start + 1)
+            
+            # Backtrack by swapping back
+            s[start], s[i] = s[i], s[start]
+
+    # Convert string to list for easier swapping
+    s = list(s)
+    backtrack(0)
+    
+    return result
+
+# Example usage
+s = "abc"
+result = permute(s)
+print(f"All permutations of '{s}': {result}")
+
+⏱️ 4. Time and Space Complexities
+Operation	`              Complexity
+Time Complexity	           O(n!)
+Space Complexity	         O(n) (Auxiliary space)
+Time Complexity: O(n!), as there are n! permutations, and we generate each one.
+
+Space Complexity: O(n), for recursion stack and storing intermediate results (since the recursion depth is n).
+
+🔍 5. Example Explanation
+Input:
+s = "abc"
+Permutations: We generate all the possible ways to arrange a, b, and c.
+
+Step-by-step:
+Swap a with a, b, and c → generates permutations like:
+
+"abc", "acb", "bac", "bca", "cab", "cba"
+
+✅ Output:
+All permutations of 'abc': ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
