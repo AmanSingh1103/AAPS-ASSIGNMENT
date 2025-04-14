@@ -1,0 +1,80 @@
+Approach:
+To generate all permutations of an array, we can use the backtracking technique. The key idea is to explore all possible arrangements of the elements in the array, using recursion to swap elements and track which elements have been used.
+
+Steps:
+Backtracking:
+Swap elements one by one and recursively generate all possible permutations of the array.
+Once a permutation is formed, add it to the result.
+After exploring a permutation, backtrack by swapping the elements back to their original positions.
+
+Swap Elements:
+To generate unique permutations, we will swap each element with all the elements that come after it in the array.
+Avoid Duplicates (if necessary):
+If the array contains duplicates, we need to ensure that the same element is not swapped in the same order more than once.
+
+Algorithm:
+Recursion: Start from the first element and swap it with each subsequent element, recursively generating permutations of the remaining array.
+Base Case: When the current index reaches the end of the array, add the current permutation to the result.
+Backtrack: After recursively generating a permutation, undo the previous swap to restore the array to its original state and explore other possibilities.
+
+Python Code:
+def permute(nums):
+    result = []
+
+    def backtrack(start):
+        # Base case: if we've reached the end of the array, add the permutation to result
+        if start == len(nums):
+            result.append(nums[:])  # Append a copy of the current permutation
+            return
+        
+        for i in range(start, len(nums)):
+            # Swap the current element with the starting element
+            nums[start], nums[i] = nums[i], nums[start]
+            # Recurse for the next position
+            backtrack(start + 1)
+            # Backtrack: undo the swap
+            nums[start], nums[i] = nums[i], nums[start]
+
+    backtrack(0)
+    return result
+
+# Example usage:
+nums = [1, 2, 3]
+print("All permutations:", permute(nums))
+Example Explanation:
+Input:
+nums = [1, 2, 3]
+Process:
+First Call to backtrack(start=0):
+Swap 1 with 1 → [1, 2, 3] 
+Call backtrack with start = 1.
+Swap 2 with 2 → [1, 2, 3]
+
+Call backtrack with start = 2.
+Swap 3 with 3 → [1, 2, 3]
+
+Add [1, 2, 3] to the result.
+Backtrack → Undo swap 3 with 3.
+Swap 3 with 2 → [1, 3, 2]
+
+Add [1, 3, 2] to the result.
+Backtrack → Undo swap 3 with 2.
+Backtrack → Undo swap 2 with 2.
+Swap 2 with 1 → [2, 1, 3]
+
+Add [2, 1, 3] to the result.
+Continue similarly for other permutations.
+Continue exploring until all permutations are generated.
+
+Output:
+All permutations: [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 2, 1], [3, 1, 2]]
+Time and Space Complexity:
+Time Complexity:
+The number of permutations of an array of length n is n! (factorial of n).
+For each permutation, we spend O(n) time to create a copy of the array or to add it to the result.
+Therefore, the total time complexity is O(n * n!).
+
+Space Complexity:
+The space complexity consists of the space required for the recursion stack and the space used to store the result.
+The recursion depth is O(n), and we store n! permutations, each of size O(n).
+Thus, the space complexity is O(n * n!).
