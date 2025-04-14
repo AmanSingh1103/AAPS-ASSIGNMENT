@@ -1,0 +1,86 @@
+✅ 1. Problem Statement
+Given: Two sorted linked lists, l1 and l2.
+Goal: Merge them into a single sorted linked list and return its head.
+
+✅ 2. Algorithm (Iterative Approach)
+Idea:
+Use a dummy node to build the result list by comparing the values from both input lists and appending the smaller one. Move forward in the list whose node was used.
+
+Steps:
+Create a dummy node (dummy) and a pointer current pointing to it.
+While both l1 and l2 are not None:
+Compare l1.val and l2.val
+Append the smaller node to current.next
+Move the pointer of the list from which node was taken
+Move current to current.next
+At the end, one list may have remaining nodes → append the rest.
+Return dummy.next (head of the merged list).
+
+💻 3. Python Program
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_two_lists(l1, l2):
+    dummy = ListNode()
+    current = dummy
+
+    while l1 and l2:
+        if l1.val <= l2.val:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+
+    # Append the remaining nodes
+    current.next = l1 if l1 else l2
+
+    return dummy.next
+
+# Helper function to print the list
+def print_list(node):
+    while node:
+        print(node.val, end=" -> ")
+        node = node.next
+    print("None")
+
+# Example usage
+# List 1: 1 -> 3 -> 5
+# List 2: 2 -> 4 -> 6
+
+l1 = ListNode(1, ListNode(3, ListNode(5)))
+l2 = ListNode(2, ListNode(4, ListNode(6)))
+merged = merge_two_lists(l1, l2)
+print("Merged Linked List:")
+print_list(merged)
+
+⏱️ 4. Time and Space Complexities
+Operation	Complexity
+Time Complexity	O(n + m)
+Space Complexity	O(1)
+Time: We traverse each list once → n and m are the lengths of the two lists.
+
+Space: In-place merge (no new nodes created except the dummy) → constant space.
+
+🔍 5. Example Explanation
+Input:
+List 1: 1 -> 3 -> 5
+List 2: 2 -> 4 -> 6
+Merge steps:
+Compare 1 and 2 → pick 1
+
+Compare 3 and 2 → pick 2
+
+Compare 3 and 4 → pick 3
+
+Compare 5 and 4 → pick 4
+
+Compare 5 and 6 → pick 5
+
+Append remaining 6
+
+✅ Output:
+Merged Linked List: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> None
