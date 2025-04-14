@@ -12,3 +12,16 @@ Then:
 P = [3, 4, 8, 9, 14]
 To get the sum from index 1 to 3 (i.e., 1 + 4 + 1 = 6):
 P[3] - P[0] = 9 - 3 = 6
+
+🔹 Applications
+Range Sum Queries
+→ Quickly compute the sum of any subarray in O(1) after O(n) preprocessing.
+
+2D Prefix Sums (Matrix)
+→ Used in image processing, game development, etc., for efficient area-based calculations.
+
+Finding Equilibrium Index
+→ Where the sum of elements before equals the sum after.
+
+Checking for Subarrays with Given Sum
+→ Especially when combined with hashing.
