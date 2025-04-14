@@ -1,0 +1,58 @@
+✅ 1. Problem Statement
+Given: A sorted array arr[] and a target sum target.
+Goal: Find two numbers in the array that add up to the target and return them.
+
+✅ 2. Algorithm (Two-Pointer Approach)
+Idea:
+Use two pointers:
+Left pointer starting at the beginning (i = 0).
+Right pointer starting at the end (j = len(arr) - 1).
+If the sum of the numbers at arr[i] and arr[j] equals target, return the pair.
+If the sum is less than target, move the left pointer i rightward to increase the sum.
+If the sum is greater than target, move the right pointer j leftward to decrease the sum.
+Repeat until the left pointer crosses the right pointer.
+
+💻 3. Python Program
+def find_two_sum(arr, target):
+    left, right = 0, len(arr) - 1
+
+    while left < right:
+        current_sum = arr[left] + arr[right]
+        
+        if current_sum == target:
+            return (arr[left], arr[right])  # Found the pair
+        elif current_sum < target:
+            left += 1  # Move left pointer to the right to increase sum
+        else:
+            right -= 1  # Move right pointer to the left to decrease sum
+
+    return None  # No pair found
+
+# Example usage
+arr = [1, 2, 3, 4, 6, 10, 15]
+target = 10
+result = find_two_sum(arr, target)
+print(f"Pair that adds up to {target}: {result}")
+
+⏱️ 4. Time and Space Complexities
+Operation	          Complexity
+Time Complexity    	O(n)
+Space Complexity	  O(1)
+Time Complexity: O(n) because the left and right pointers each move at most once from opposite ends of the array.
+
+Space Complexity: O(1) because only two pointers are used, with no extra space required for storing intermediate results.
+
+🔍 5. Example Explanation
+Input:
+arr = [1, 2, 3, 4, 6, 10, 15]
+target = 10
+Start with left = 0 (points to 1) and right = 6 (points to 15).
+1 + 15 = 16 → Too large, so move right to index 5.
+Now, 1 + 10 = 11 → Too large, move right to index 4.
+1 + 6 = 7 → Too small, so move left to index 1.
+2 + 6 = 8 → Too small, move left to index 2.
+3 + 6 = 9 → Too small, move left to index 3.
+Finally: 4 + 6 = 10 → Match!
+
+✅ Output:
+Pair that adds up to 10: (4, 6)
